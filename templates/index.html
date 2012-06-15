@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Bookmarks Manager</title>
+    <link rel="icon" href="{{ url_for( 'static', filename='./img/favicon.gif') }}" type="image/x-icon" />
+    <!-- Le styles -->
+    <link rel="stylesheet" href="{{ url_for( 'static', filename='./css/bootstrap.css') }}" >
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      footer {
+        margin-top: 45px;
+        padding: 35px 0 36px;
+        border-top: 1px solid #E5E5E5;
+        color: #555;
+      }
+    </style>
+    <link href="{{ url_for( 'static', filename='./css/bootstrap-responsive.css') }}" rel="stylesheet">
+    <link href="{{ url_for( 'static', filename='./css/chosen.css') }}" rel="stylesheet">
+    <meta name="viewport" content="width=480, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="#">Bookmarks Manager</a>
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="/">Home</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Forms -->
+        <div class="row">
+            <!-- Add Bookmark Form -->
+            <div class="offset2 span3">
+                <a class="btn btn-primary" data-toggle="modal" href="#AddNewBookmark">
+                    <i class="icon-plus icon-white"></i>
+                    Add New Bookmark
+                </a>
+            </div>
+            
+            <!-- Search Form -->
+            <div class="span6">
+                <div id="searchForm" class="row span6">
+                    <form class="form-search" action="{{ url_for('bookmarks') }}" method="post">
+                        <input type="text" name="search" placeholder="Search for tags" class="input-medium search-query span3"/>
+                        <button type="submit" class="btn">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div> <!-- /Forms -->
+        
+        <!-- modal Form -->
+        <div class="modal hide fade in" id="AddNewBookmark">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">x</button>
+                <h3>Add New Bookmark</h3>
+            </div>
+            <div class="modal-body">
+                <form id="addBookmark" class="form-horizontal" action="{{ url_for('bookmarks') }}" method="post">
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" for="textTitle">Title</label>
+                            <div class="controls">
+                                <input type="text" class="input-xlarge" name="textTitle">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="textLink">URL</label>
+                            <div class="controls">
+                                <input type="text" class="input-xlarge" name="textLink">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="textTags">Tags</label>
+                            <div class="controls">
+                                <input type="text" class="input-xlarge" name="textTags">
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Close</a>
+                <button class="btn btn-primary" type="submit" form="addBookmark" formaction="{{ url_for('bookmarks') }}" formmethod="post" >Save Entry</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Main Content Area-->
+            <div class="offset1 span9">
+                <div id="addrTable" class="row">
+                    <table class="table table-striped table-bordered">
+                        <caption>Table of Bookmarks</caption>
+                        <thead>
+                            <tr>
+                                {% for title in headers %}
+                                <th>{{ title }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in table %}
+                            <tr>
+                                <td>{{ row["Title"] }}</td>
+                                <td><a href="{{ row["Link"] }}" target="_blank">{{ row["Link"] }}</a></td>
+                                <td>{{ ", ".join(row["Tags"]) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                    <div class="alert alert-error">
+                        <button class="close" data-dismiss="alert">×</button>
+                        {% for message in messages %}
+                            {{message}}
+                        {% endfor %}
+                    </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <footer class="footer">
+                    <p class="pull-right">
+                        <a href="#">Back to Top</a>
+                    </p>
+                    <p>
+                        This document was generated for Bookmark Manager, for Interview Street. <br/>
+                        Designed by Jeryn Mathew. <br/>
+                        (c) 2012. All rights reserved. <br/>
+                    </p>
+                </footer>
+                <br />
+                <br />
+
+            </div> <!-- /content -->
+        </div>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ url_for( 'static', filename='./js/jquery-1.7.2.min.js' ) }}"></script>
+    <script src="{{ url_for( 'static', filename='./js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for( 'static', filename='./js/chosen.jquery.min.js') }}"></script>
+    <script type="text/javascript">
+        $(".chzn-select").chosen();
+        $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+    </script>
+    <script type="text/javascript">
+        $("#AddNewBookmark").modal(show:false);
+    </script>
+</body>
+</html>
