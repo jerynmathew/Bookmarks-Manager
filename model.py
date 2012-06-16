@@ -18,7 +18,6 @@ Search Table of Bookmarks for specific tag
 def searchBookmarks( searchstring ):
     table = []
     fulltable = getBookmarks()
-    print fulltable
     for entry in fulltable:
         if searchstring.lower() in [ x.lower() for x in entry["Tags"] ]:
             table.append( entry )
