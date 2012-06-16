@@ -15,6 +15,11 @@ Run Instructions
 
 Features
 ========
+v1.1
+----
+* Has single template. Does not support multi-user login.
+* Bookmarks info is now persistant. Stored as a JSON file.
+
 v1.0
 ----
 * Has single template. Does not support multi-user login.
